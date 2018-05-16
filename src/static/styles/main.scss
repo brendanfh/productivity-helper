@@ -1,0 +1,119 @@
+// $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+// @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
+// @import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+// can add Boostrap overrides, additional Sass/CSS below...
+
+* {
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#main {
+    display: flex;
+    flex-flow: row;
+
+    .half {
+        width: 50vw;
+        height: 100vh;
+        display: grid; 
+        grid-template-columns: 2fr 8fr 2fr;
+        grid-template-rows: 1fr 6rem 1fr 3rem 8fr 1fr;
+        grid-gap: 0;
+
+        .time-display {
+            font-size: 4rem;
+            line-height: 5rem;
+            background: rgba(0, 0, 0, .2);
+            padding: .5rem;
+        }
+
+        .task-header {
+            grid-column: 2 / span 1;
+            grid-row: 4 / span 1;
+
+            font-size: 2rem;
+            line-height: 3rem;
+            text-align: center;
+
+            background: rgba(0, 0, 0, .2);
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            border-bottom: 2px solid black;
+        }
+
+        .task-list {
+            background: rgba(0, 0, 0, .2);
+            grid-column: 2 / span 1;
+            grid-row: 5 / span 1;
+            
+            overflow-y: auto;
+
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+
+            .task {
+                background: rgba(0, 0, 0, .5);
+                color: white;
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+                font-size: 1.3rem;
+                text-align: center;
+                margin-top: .5rem;
+
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            &::-webkit-scrollbar {
+                width: .5rem;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #111111;
+                border-bottom-right-radius: .5rem;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #888888;
+                border-radius: .25rem;
+            }
+        }
+
+        //left and right specializations
+        &.left {
+            background: #555;
+            &.enabled {
+                background: #e57373;
+            }
+
+            .time-display {
+                grid-column: 3 / span 1;
+                grid-row: 2 / span 1;
+                text-align: right;
+
+                border-top-left-radius: 1rem;
+                border-bottom-left-radius: 1rem;
+            }
+        }
+        
+        &.right {
+            background: #555;
+            &.enabled {
+                background: #aed581;
+            }
+
+            .time-display {
+                grid-column: 1 / span 1;
+                grid-row: 2 / span 1;
+
+                border-top-right-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+            }
+        }
+    }
+}
