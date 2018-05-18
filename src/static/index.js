@@ -1,6 +1,7 @@
 // pull in desired CSS/SASS files
 require('./styles/main.scss');
-// var $ = jQuery = require('../../node_modules/jquery/dist/jquery.js');           // <--- remove if jQuery not needed
+var $ = jQuery = require('../../node_modules/jquery/dist/jquery.js');           // <--- remove if jQuery not needed
+require("./sounds/chime.mp3");
 // require('../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.js');   // <--- remove if Bootstrap's JS not needed 
 
 // inject bundled Elm app into div#main
@@ -22,4 +23,9 @@ app.ports.loadFromLocalStorage.subscribe(function (_) {
         app.ports.localStorageSubscription.send(tasks);
         return;
     }
+});
+
+app.ports.playChime.subscribe(function (_) {
+    var sound = new Audio("static/sounds/chime.mp3");
+    sound.play();
 });

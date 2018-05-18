@@ -37,6 +37,9 @@ var commonConfig = {
         rules: [{
             test: /\.(eot|ttf|woff|woff2|svg)$/,
             use: 'file-loader?publicPath=../../&name=static/css/[hash].[ext]'
+        }, {
+            test: /\.mp3$/,
+            use: 'file-loader?publicPath=../../&name=static/sounds/[name].[ext]'
         }]
     },
     plugins: [
@@ -78,7 +81,7 @@ if (isDev === true) {
                         debug: true
                     }
                 }]
-            },{
+            }, {
                 test: /\.sc?ss$/,
                 use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
             }]

@@ -7,6 +7,7 @@ import Html.Events as HE
 import Json.Decode as Json
 import Material.Icon as Icon
 import Models exposing (..)
+import Sounds as Sounds
 import Storage as Storage
 import Time as Time
 import Task as Task
@@ -42,7 +43,7 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { currentTime = -1
-      , state = Undefined
+      , state = Working
       , workingTime = ""
       , breakTime = ""
       , tasks = []
@@ -173,6 +174,12 @@ update msg model =
                 newState =
                     determineState t
 
+                soundCmd =
+                    if newState /= model.state then
+                        Sounds.playChime ()
+                    else
+                        Cmd.none
+
                 ( time1, time2 ) =
                     determineTimes t
             in
@@ -182,7 +189,7 @@ update msg model =
                     , workingTime = time1
                     , breakTime = time2
                 }
-                    ! []
+                    ! [ soundCmd ]
 
         AddTask ->
             if model.newTaskText == "" then
