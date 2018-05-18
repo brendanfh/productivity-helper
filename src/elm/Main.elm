@@ -373,9 +373,30 @@ view model =
             [ HA.class "left timer"
             , when (model.state == Working) (HA.class "enabled")
             ]
+            []
+        , div
+            [ HA.class "left timer time-display" ]
+            [ text model.workingTime ]
+        , div
+            [ HA.class "right timer"
+            , when (model.state == BreakTime) (HA.class "enabled")
+            ]
+            []
+        , div
+            [ HA.class "right timer time-display" ]
+            [ text model.breakTime ]
+        , div
+            [ HA.class "state-display"
+            , when (model.state == Working) (HA.class "working")
+            ]
             [ div
-                [ HA.class "time-display" ]
-                [ text model.workingTime ]
+                [ HA.class "state-text" ]
+                [ text <|
+                    if model.state == Working then
+                        "Go Work!"
+                    else
+                        "Relax :)"
+                ]
             ]
         , div
             [ HA.class "left tasks"
@@ -390,14 +411,6 @@ view model =
                     , [ viewAddTask model.newTaskText ]
                     ]
                 )
-            ]
-        , div
-            [ HA.class "right timer"
-            , when (model.state == BreakTime) (HA.class "enabled")
-            ]
-            [ div
-                [ HA.class "time-display" ]
-                [ text model.breakTime ]
             ]
         , div
             [ HA.class "right tasks"
