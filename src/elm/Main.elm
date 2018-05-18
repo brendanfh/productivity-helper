@@ -80,16 +80,13 @@ type Msg
 determineState : Time.Time -> State
 determineState t =
     let
-        date =
-            Date.fromTime t
-
-        m =
-            Date.minute date
-
-        mm30 =
-            m % 30
+        mins =
+            t
+                |> Date.fromTime
+                |> Date.minute
+                |> (\m -> m % 30)
     in
-        if mm30 <= 24 then
+        if mins <= 24 then
             Working
         else
             BreakTime
@@ -112,20 +109,13 @@ determineTimes t =
 
         pad =
             String.padLeft 2 '0'
-
-        time1 =
-            if state == Working then
-                (pad <| toString (24 - m)) ++ ":" ++ (pad <| toString (59 - s))
-            else
-                "25:00"
-
-        time2 =
-            if state == BreakTime then
-                (pad <| toString (29 - m)) ++ ":" ++ (pad <| toString (59 - s))
-            else
-                "05:00"
     in
-        ( time1, time2 )
+        case state of
+            Working ->
+                ( (pad <| toString (24 - m)) ++ ":" ++ (pad <| toString (59 - s)), "05:00" )
+
+            BreakTime ->
+                ( "25:00", (pad <| toString (29 - m)) ++ ":" ++ (pad <| toString (59 - s)) )
 
 
 modifyTask : TaskAction -> TaskId -> Task -> List Task
@@ -209,7 +199,10 @@ update msg model =
                     newTasks =
                         newTask :: model.tasks
                 in
-                    { model | newTaskText = "", tasks = newTasks }
+                    { model
+                        | newTaskText = ""
+                        , tasks = newTasks
+                    }
                         ! [ saveTasks newTasks ]
 
         ModifyTask action taskId ->
@@ -250,17 +243,17 @@ onEnter msg =
         HE.on "keydown" <| Json.andThen isEnter HE.keyCode
 
 
-obscurer : State -> Html Msg
-obscurer state =
-    case state of
-        Working ->
-            (div
-                [ HA.class "obscure" ]
-                []
-            )
 
-        _ ->
-            (text "")
+-- obscurer : State -> Html Msg
+-- obscurer state =
+--     case state of
+--         Working ->
+--             (div
+--                 [ HA.class "obscure" ]
+--                 []
+--             )
+--         _ ->
+--             (text "")
 
 
 viewAction : TaskAction -> Html Msg
@@ -393,18 +386,14 @@ view model =
             , div
                 [ HA.class "task-list" ]
                 (List.concat
-                    [ (viewTasks UncompletedGroup model.tasks)
+                    [ viewTasks UncompletedGroup model.tasks
                     , [ viewAddTask model.newTaskText ]
                     ]
                 )
-
-            -- , obscurer model.state
             ]
         , div
             [ HA.class "right timer"
-            , when
-                (model.state == BreakTime)
-                (HA.class "enabled")
+            , when (model.state == BreakTime) (HA.class "enabled")
             ]
             [ div
                 [ HA.class "time-display" ]
@@ -419,8 +408,6 @@ view model =
             , div
                 [ HA.class "task-list" ]
                 (viewTasks CompletedGroup model.tasks)
-
-            -- , obscurer model.state
             ]
         ]
 

@@ -26,6 +26,12 @@ $secondary-text: #000000;
     box-sizing: border-box;
 }
 
+@media screen and (max-width: 500px) {
+    :root {
+        font-size: 6px;
+    }
+}
+
 #main {
     display: grid;
     width: 100vw;

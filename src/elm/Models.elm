@@ -4,7 +4,6 @@ module Models exposing (..)
 type State
     = Working
     | BreakTime
-    | Undefined
 
 
 type TaskGroup
